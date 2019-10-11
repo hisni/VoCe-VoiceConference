@@ -1,13 +1,13 @@
 import java.net.* ;
-import java.util.*;
-import java.io.IOException; 
-import java.util.Date;
+// import java.util.*;
+// import java.io.IOException; 
+// import java.util.Date;
 import java.net.MulticastSocket;
 
 
 public class Receiver extends Thread{
 
-    // public final static int packetsize = 1000 ;
+    public final static int packetsize = 1000 ;
 
     // private byte tempBuffer[];
     private InetAddress MulticastIP;
@@ -27,12 +27,11 @@ public class Receiver extends Thread{
 
 		try{
 			//get the network interface
-			NetworkInterface ni = NetworkInterface.getByInetAddress(new PacketData(0,null).getLocalAddress());
+			// NetworkInterface ni = NetworkInterface.getByInetAddress(new PacketData(0,null).getLocalAddress());
 			
-
 			// Construct the socket
 			socket = new MulticastSocket( Port ) ;//non-recoverable
-			socket.setNetworkInterface(NetworkInterface.getByName(ni.getName()));//set the network interface
+			// socket.setNetworkInterface(NetworkInterface.getByName(ni.getName()));//set the network interface
 			socket.joinGroup(MulticastIP);
 
 			System.out.println( "The server is ready..." ) ;
@@ -43,13 +42,13 @@ public class Receiver extends Thread{
 			// ErrCorrection ec 	 = new ErrCorrection(); 
 			// Statistics details = new Statistics();
 
-			// RecoderAndPlay recPlay = new RecoderAndPlay(2);
+			Audio recPlay = new Audio(2);
 
-			// for( ;; ){
-			// 	try{
-			// 		DatagramPacket packet = new DatagramPacket( new byte[packetsize], packetsize ) ;//non-recoverable
+			for( ;; ){
+				try{
+					DatagramPacket packet = new DatagramPacket( new byte[packetsize], packetsize ) ;//non-recoverable
 			// 		// Receive a packet (blocking)
-			// 		socket.receive( packet ) ;
+					socket.receive( packet ) ;
 
 
 			// 		pd = new PacketData(packet.getData());
@@ -72,13 +71,13 @@ public class Receiver extends Thread{
 			// 			System.out.println("Approximate time since start : "+details.getApproxTime());
 			// 			ec = new ErrCorrection();
 			// 		}
-			// 		recPlay.player(pd.getVoice());
+					recPlay.player( packet.getData() );
 			
-			// 	}catch(Exception e){
-			// 		System.out.println(e);
-			// 		e.printStackTrace();
-			// 	}
-			// }    
+				}catch(Exception e){
+					System.out.println(e);
+					e.printStackTrace();
+				}
+			}    
 		}catch( Exception e ){
 			System.out.println( e ) ;
 			e.printStackTrace();

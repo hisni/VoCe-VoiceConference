@@ -110,7 +110,7 @@ public class Audio{
         }
     }
 
-    private void captureAndPlay() {
+    public void captureAndPlay() {
         byteArrayOutputStream = new ByteArrayOutputStream();
         stopCapture = false;
         try {
@@ -128,5 +128,9 @@ public class Audio{
             System.exit(0);
         }
     }
+
+    public void player(byte tempBuffer[]){	    
+	    sourceDataLine.write(tempBuffer, 0, tempBuffer.length);   //playing audio available in tempBuffer
+	}
 
 }
