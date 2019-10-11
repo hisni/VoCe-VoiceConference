@@ -11,8 +11,8 @@ public class VoCe{
                 multicastIP = InetAddress.getByName( args[0] ) ;
                 port = Integer.parseInt( "9000") ;
                 
-                // Receiver receiver = new Receiver( multicastIP, port );
-                // receiver.start();
+                Receiver receiver = new Receiver( multicastIP, port );
+                receiver.start();
                 Sender  sender = new Sender( multicastIP, port );
                 sender.start();
 
