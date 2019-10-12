@@ -12,47 +12,46 @@ public class Sender extends Thread {
     private MulticastSocket socket = null;
     private InetAddress MulticastIP;
     private int Port;
-    // private AudioFormat audioFormat;
     private TargetDataLine targetDataLine;
     private byte tempBuffer[] = new byte[packetsize];
-    // private static long sequenceNo=0;
-    // private boolean stopCapture = false;
+    private static long sequenceNo=0;
+    private boolean stopCapture = false;
+    private Audio audioObj;
 
-
-    public Sender (InetAddress IP,int port){
+    public Sender( InetAddress IP, int port, Audio audioObj ){
         this.MulticastIP = IP;
         this.Port = port;
+        this.audioObj = audioObj;
     }
 
-    private void sendPacket( MulticastSocket socket ){
-        // byte[] newByte;
-        // PacketData pd;
-        // stopCapture = false;
+    private void sendPacket(){
+        stopCapture = false;
 
         try{
             int readCount;
-            // while (!stopCapture) {
+            while (!stopCapture) {
                 readCount = targetDataLine.read(tempBuffer, 0, tempBuffer.length);  //capture sound into tempBuffer
 
-                if (readCount > 0) {
-                    // ++sequenceNo;
-                    // sequenceNo=sequenceNo%Integer.MAX_VALUE;
-                    // //creating packet with a sequence NUmber
-                    // pd=new PacketData( sequenceNo, tempBuffer );
-                    // newByte=PacketData.fullByteArray(pd);
+                if ( readCount > 0 ) {
+                    ++sequenceNo;
+                    sequenceNo = sequenceNo%Integer.MAX_VALUE;
+                    //creating packet with a sequence NUmber
+                    DataPacket dataPacket = new DataPacket( sequenceNo, tempBuffer );
+                    // byte[] newBuffer = DataPacket.serialize( dataPacket );
+                    byte[] newBuffer = DataPacket.ObjectToByteArray( dataPacket );
                     
-                    // DatagramPacket packet =new DatagramPacket( newByte, newByte.length, MulticastIP, Port ); 
+                    DatagramPacket packet = new DatagramPacket( newBuffer, newBuffer.length, MulticastIP, Port ); 
 
                     //NEW*************** 
-                    DatagramPacket packet =new DatagramPacket( tempBuffer, tempBuffer.length, MulticastIP, Port );
-                     //NEW***************
+                    // DatagramPacket packet =new DatagramPacket( tempBuffer, tempBuffer.length, MulticastIP, Port );
+                    //NEW***************
 
-                     // Send the packet
+                    // Send the packet
                     socket.setTimeToLive(2);
-                    socket.send( packet ) ;
+                    socket.send( packet );
                     socket.setLoopbackMode(true);
                 }
-            // }
+            }
         }catch( IOException e ) {
             System.out.println(e);
             e.printStackTrace();
@@ -63,15 +62,16 @@ public class Sender extends Thread {
     public void run(){
         try{
             socket = new MulticastSocket(); 
-            Audio audioObj = new Audio(1);
             targetDataLine = audioObj.getTargetDataLine();
-            sendPacket( socket );
+            sendPacket();
 
         }catch(Exception e){
             System.out.println(e);
             e.printStackTrace();
+
         }finally{
-            socket.close() ;
+            socket.close();
+
         }
     }
 }

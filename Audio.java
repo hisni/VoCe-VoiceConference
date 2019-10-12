@@ -1,5 +1,5 @@
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+// import java.io.ByteArrayOutputStream;
+// import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
 // import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -13,23 +13,16 @@ import javax.sound.sampled.TargetDataLine;
 
 public class Audio{
 
-    private boolean stopCapture = false;
-    ByteArrayOutputStream byteArrayOutputStream;
+    // private boolean stopCapture = false;
     AudioFormat audioFormat;
     TargetDataLine targetDataLine;
-    // AudioInputStream audioInputStream;
     SourceDataLine sourceDataLine;
-    byte tempBuffer[] = new byte[500];
+    // ByteArrayOutputStream byteArrayOutputStream;
+    // AudioInputStream audioInputStream;
+    // byte tempBuffer[] = new byte[500];
 
-    public Audio(int state){
-        switch (state){
-            case 1:
-                captureAudio();
-                break;
-            case 2:
-                setPlayAudio();
-                break;
-        }
+    public Audio(){
+        intialize();
     }
 
     private AudioFormat getAudioFormat() {
@@ -41,7 +34,7 @@ public class Audio{
         return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
     }
 
-    private void captureAudio(){       
+    private void intialize(){       
         try{
             Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();    //get available mixers
             System.out.println("Available mixers:");
@@ -65,6 +58,16 @@ public class Audio{
             targetDataLine = (TargetDataLine) mixer.getLine(dataLineInfo);
             targetDataLine.open(audioFormat);
             targetDataLine.start();
+
+            DataLine.Info dataLineInfo1 = new DataLine.Info(SourceDataLine.class, audioFormat);
+            sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo1);
+            sourceDataLine.open(audioFormat);
+            sourceDataLine.start();
+            
+            //Setting the maximum volume
+            FloatControl control = (FloatControl)sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
+            control.setValue(control.getMaximum());
+
         }catch (LineUnavailableException e) {
             System.out.println(e);
             System.exit(0);
@@ -75,62 +78,30 @@ public class Audio{
         return this.targetDataLine;  
     }
 
-    private void setPlayAudio(){
-        try {
-            Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();    //get available mixers
-            System.out.println("Available mixers:");
-            Mixer mixer = null;
-            for (int cnt = 0; cnt < mixerInfo.length; cnt++) {
-                System.out.println(cnt + " " + mixerInfo[cnt].getName());
-                
-                mixer = AudioSystem.getMixer(mixerInfo[cnt]);
-
-                Line.Info[] lineInfos = mixer.getTargetLineInfo();
-                if (lineInfos.length >= 1 && lineInfos[0].getLineClass().equals(TargetDataLine.class)) {
-                    System.out.println(cnt + " Mic is supported!");
-                    break;
-                }
-            }
-
-            audioFormat = getAudioFormat();     //get the audio format
-            
-            DataLine.Info dataLineInfo1 = new DataLine.Info(SourceDataLine.class, audioFormat);
-            sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo1);
-            sourceDataLine.open(audioFormat);
-            sourceDataLine.start();
-            
-            //Setting the maximum volume
-            FloatControl control = (FloatControl)sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
-            control.setValue(control.getMaximum());
-              
-            // captureAndPlay();
-        } catch (Exception e) {
-            System.out.println(e);
-            e.printStackTrace();
-        }
+    public SourceDataLine sourceDataLine(){
+        return this.sourceDataLine;  
     }
 
-    public void captureAndPlay() {
-        byteArrayOutputStream = new ByteArrayOutputStream();
-        stopCapture = false;
-        try {
-            int readCount;
-            while (!stopCapture) {
-                readCount = targetDataLine.read(tempBuffer, 0, tempBuffer.length);  //capture sound into tempBuffer
-                if (readCount > 0) {
-                    byteArrayOutputStream.write(tempBuffer, 0, readCount);
-                    sourceDataLine.write(tempBuffer, 0, 500);   //playing audio available in tempBuffer
-                }
-            }
-            byteArrayOutputStream.close();
-        } catch (IOException e) {
-            System.out.println(e);
-            System.exit(0);
-        }
+    public void playAudio(byte buffer[]){
+	    sourceDataLine.write( buffer, 0, buffer.length ); //Playing audio available in buffer
     }
-
-    public void player(byte tempBuffer[]){	    
-	    sourceDataLine.write(tempBuffer, 0, tempBuffer.length);   //playing audio available in tempBuffer
-	}
-
+    
+    // public void captureAndPlay( byte tempBuffer[] ) {
+    //     byteArrayOutputStream = new ByteArrayOutputStream();
+    //     stopCapture = false;
+    //     try {
+    //         int readCount;
+    //         while (!stopCapture) {
+    //             readCount = targetDataLine.read(tempBuffer, 0, tempBuffer.length);  //capture sound into tempBuffer
+    //             if (readCount > 0) {
+    //                 byteArrayOutputStream.write(tempBuffer, 0, readCount);
+    //                 sourceDataLine.write(tempBuffer, 0, 500);   //playing audio available in tempBuffer
+    //             }
+    //         }
+    //         byteArrayOutputStream.close();
+    //     } catch (IOException e) {
+    //         System.out.println(e);
+    //         System.exit(0);
+    //     }
+    // }
 }
