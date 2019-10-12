@@ -42,10 +42,6 @@ public class Sender extends Thread {
                     
                     DatagramPacket packet = new DatagramPacket( newBuffer, newBuffer.length, MulticastIP, Port ); 
 
-                    //NEW*************** 
-                    // DatagramPacket packet =new DatagramPacket( tempBuffer, tempBuffer.length, MulticastIP, Port );
-                    //NEW***************
-
                     // Send the packet
                     socket.setTimeToLive(2);
                     socket.send( packet );
