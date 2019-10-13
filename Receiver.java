@@ -4,7 +4,6 @@ import java.util.*;
 // import java.util.Date;
 import java.net.MulticastSocket;
 
-
 public class Receiver extends Thread{
 
     public final static int packetsize = 594 ;
@@ -13,12 +12,12 @@ public class Receiver extends Thread{
     private InetAddress MulticastIP;
     private int Port;
 	private MulticastSocket socket;
-    private Audio audioObj;
+    // private Audio audioObj;
 
     public Receiver( InetAddress IP, int port, Audio audioObj ){
         this.MulticastIP=IP;
 		this.Port=port;
-        this.audioObj = audioObj;		
+        // this.audioObj = audioObj;		
     }
 
 	public InetAddress getLocalAddress() {
@@ -50,9 +49,8 @@ public class Receiver extends Thread{
 			socket = new MulticastSocket( Port );	//non-recoverable
 			socket.setNetworkInterface( NetworkInterface.getByName(networkInterface.getName()) );//set the network interface
 			socket.joinGroup( MulticastIP );
-			socket.setLoopbackMode(true);
-			System.out.println(NetworkInterface.getByName(networkInterface.getName()));
-
+			// socket.setLoopbackMode(true);
+			
 			DataPacket dataPacket;
 
 			while( true ){
@@ -61,11 +59,8 @@ public class Receiver extends Thread{
 	
 					socket.receive( packet );		//Receive a packet (blocking)
 					dataPacket = new DataPacket( packet.getData() );
-
-					// System.out.println( "Receiver - "+dataPacket.getSequenceNo() );
-					// System.out.println( packet.getData().length + " " + dataPacket.getVoice().length );
-					audioObj.playAudio( dataPacket.getVoice() );
-					// audioObj.playAudio( packet.getData() );
+					Player.addToBuffer( dataPacket );
+					
 				}catch(Exception e){
 					System.out.println(e);
 					e.printStackTrace();

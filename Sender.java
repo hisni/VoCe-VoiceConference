@@ -64,10 +64,11 @@ public class Sender extends Thread {
     public void run(){
         try{
             socket = new MulticastSocket();
+			socket.joinGroup( MulticastIP );
             socket.setLoopbackMode(true);
             targetDataLine = audioObj.getTargetDataLine();
             sendPacket();
-            
+
         }catch(Exception e){
             System.out.println(e);
             e.printStackTrace();
