@@ -16,6 +16,8 @@ public class VoCe{
                 receiver.start();
                 Sender  sender = new Sender( multicastIP, port, audioObj );
                 sender.start();
+                Player player = new Player( audioObj );
+                player.start();
 
             }catch(Exception e){
                 System.out.println(e);
