@@ -1,9 +1,9 @@
 import java.io.*;
 import java.io.Serializable;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
+// import java.net.Inet4Address;
+// import java.net.InetAddress;
+// import java.net.NetworkInterface;
+// import java.util.Enumeration;
 // import java.nio.ByteBuffer;
 
 public class DataPacket implements Serializable{
@@ -11,42 +11,42 @@ public class DataPacket implements Serializable{
 	private static final long serialVersionUID = -6470090944414208496L;
 	private byte [] voiceBuffer;
 	private long sequenceNo;
-	private int id;
+	// private int id;
 
 	public DataPacket( long sequenceNo, byte [] voice ){
 		this.voiceBuffer = voice;		
 		this.sequenceNo = sequenceNo;
-		this.id = 10;
+		// this.id = 10;
 	}
 
 	public DataPacket( byte [] data ) throws IOException, ClassNotFoundException {
 		DataPacket tempPacket = ByteArrayToObject( data );
 		this.voiceBuffer = tempPacket.voiceBuffer;
 		this.sequenceNo  = tempPacket.sequenceNo;
-		this.id  = tempPacket.id; 
+		// this.id  = tempPacket.id; 
 	}
 
-	public InetAddress getLocalAddress() {
-		try{
-		    Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
-		    while( ifaces.hasMoreElements() ){
-		      	NetworkInterface iface = ifaces.nextElement();
-		     	Enumeration<InetAddress> addresses = iface.getInetAddresses();
+	// public InetAddress getLocalAddress() {
+	// 	try{
+	// 	    Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
+	// 	    while( ifaces.hasMoreElements() ){
+	// 	      	NetworkInterface iface = ifaces.nextElement();
+	// 	     	Enumeration<InetAddress> addresses = iface.getInetAddresses();
 
-			    while( addresses.hasMoreElements() ){
+	// 		    while( addresses.hasMoreElements() ){
 
-			        InetAddress addr = addresses.nextElement();
-			        if( addr instanceof Inet4Address && !addr.isLoopbackAddress() ){
-			          return addr;
-			        }
-		      	}
-		    }
-		    return null;
-		}catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-	}
+	// 		        InetAddress addr = addresses.nextElement();
+	// 		        if( addr instanceof Inet4Address && !addr.isLoopbackAddress() ){
+	// 		          return addr;
+	// 		        }
+	// 	      	}
+	// 	    }
+	// 	    return null;
+	// 	}catch(Exception e){
+	// 		e.printStackTrace();
+	// 		return null;
+	// 	}
+	// }
      
 	public DataPacket ByteArrayToObject(byte [] data) throws IOException{
 		ObjectInputStream  ois = null;
@@ -85,7 +85,7 @@ public class DataPacket implements Serializable{
 	}
 
 	public byte[] getVoice(){
-            return voiceBuffer;
+		return voiceBuffer;
 	}
 
 	// public int getId(){
