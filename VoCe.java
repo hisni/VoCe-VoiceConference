@@ -13,10 +13,10 @@ public class VoCe{
                 Audio audioObj = new Audio();
                 
                 Receiver receiver = new Receiver( multicastIP, port, audioObj );
-                receiver.start();
                 Sender  sender = new Sender( multicastIP, port, audioObj );
-                sender.start();
                 Player player = new Player( audioObj );
+                sender.start();
+                receiver.start();
                 player.start();
 
             }catch(Exception e){

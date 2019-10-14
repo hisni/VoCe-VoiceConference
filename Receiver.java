@@ -49,7 +49,7 @@ public class Receiver extends Thread{
 			socket = new MulticastSocket( Port );	//non-recoverable
 			socket.setNetworkInterface( NetworkInterface.getByName(networkInterface.getName()) );//set the network interface
 			socket.joinGroup( MulticastIP );
-			// socket.setLoopbackMode(true);
+			socket.setLoopbackMode(true);
 			
 			DataPacket dataPacket;
 
