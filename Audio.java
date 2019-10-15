@@ -1,5 +1,6 @@
-// import java.io.ByteArrayOutputStream;
-// import java.io.IOException;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
 // import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -17,9 +18,8 @@ public class Audio{
     AudioFormat audioFormat;
     TargetDataLine targetDataLine;
     SourceDataLine sourceDataLine;
-    // ByteArrayOutputStream byteArrayOutputStream;
+    ByteArrayOutputStream byteArrayOutputStream;
     // AudioInputStream audioInputStream;
-    // byte tempBuffer[] = new byte[500];
 
     public Audio(){
         intialize();
@@ -74,34 +74,32 @@ public class Audio{
         }
     }
 
-    public TargetDataLine getTargetDataLine(){
-        return this.targetDataLine;  
-    }
+    // public TargetDataLine getTargetDataLine(){
+    //     return this.targetDataLine;  
+    // }
 
-    public SourceDataLine sourceDataLine(){
-        return this.sourceDataLine;  
-    }
+    // public SourceDataLine sourceDataLine(){
+    //     return this.sourceDataLine;  
+    // }
 
     public void playAudio(byte buffer[]){
 	    sourceDataLine.write( buffer, 0, buffer.length ); //Playing audio available in buffer
     }
     
-    // public void captureAndPlay( byte tempBuffer[] ) {
-    //     byteArrayOutputStream = new ByteArrayOutputStream();
-    //     stopCapture = false;
-    //     try {
-    //         int readCount;
-    //         while (!stopCapture) {
-    //             readCount = targetDataLine.read(tempBuffer, 0, tempBuffer.length);  //capture sound into tempBuffer
-    //             if (readCount > 0) {
-    //                 byteArrayOutputStream.write(tempBuffer, 0, readCount);
-    //                 sourceDataLine.write(tempBuffer, 0, 500);   //playing audio available in tempBuffer
-    //             }
-    //         }
-    //         byteArrayOutputStream.close();
-    //     } catch (IOException e) {
-    //         System.out.println(e);
-    //         System.exit(0);
-    //     }
-    // }
+    public byte[] captureAudio( ) {
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        byte tempBuffer[] = new byte[500];
+        try {
+            int readCount = targetDataLine.read(tempBuffer, 0, tempBuffer.length);  //Capture sound into tempBuffer
+                if (readCount > 0) {
+                    byteArrayOutputStream.write(tempBuffer, 0, readCount);
+                }
+            byteArrayOutputStream.close();
+            return tempBuffer;
+        }catch(IOException e) {
+            System.out.println(e);
+            System.exit(0);
+            return tempBuffer;
+        }
+    }
 }
