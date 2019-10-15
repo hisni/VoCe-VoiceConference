@@ -1,7 +1,5 @@
 import java.net.* ;
 import java.util.*;
-// import java.io.IOException; 
-// import java.util.Date;
 import java.net.MulticastSocket;
 
 public class Receiver extends Thread{
