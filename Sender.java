@@ -9,31 +9,32 @@ public class Sender extends Thread {
     private MulticastSocket socket = null;
     private InetAddress MulticastIP;
     private int Port;
+    private int userID;
     private byte tempBuffer[] = new byte[packetsize];
     private static long sequenceNo=0;
-    // private boolean stopCapture = false;
     private Audio audioObj;
 
-    public Sender( InetAddress IP, int port, Audio audioObj ){
+    public Sender( InetAddress IP, int port, int id ,Audio audioObj ){
         this.MulticastIP = IP;
         this.Port = port;
+        this.userID = id;
         this.audioObj = audioObj;
+
     }
 
     private void sendPacket(){
         DataPacket dataPacket;
-        byte[] newBuffer;
+        byte[] buffer;
 
         try{           
             while ( true ) {
                 tempBuffer = audioObj.captureAudio();
 
-                sequenceNo = (sequenceNo + 1 )%Integer.MAX_VALUE;
-                dataPacket = new DataPacket( sequenceNo, tempBuffer );
+                sequenceNo = ( sequenceNo + 1 )%Integer.MAX_VALUE;
+                dataPacket = new DataPacket( tempBuffer, sequenceNo, userID );
 
-                newBuffer = DataPacket.ObjectToByteArray( dataPacket );
-                
-                DatagramPacket packet = new DatagramPacket( newBuffer, newBuffer.length, MulticastIP, Port ); 
+                buffer = DataPacket.ObjectToByteArray( dataPacket );
+                DatagramPacket packet = new DatagramPacket( buffer, buffer.length, MulticastIP, Port ); 
                 
                 // Send the packet
                 socket.setTimeToLive(2);
