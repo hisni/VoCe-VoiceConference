@@ -1,10 +1,5 @@
 import java.io.*;
 import java.io.Serializable;
-// import java.net.Inet4Address;
-// import java.net.InetAddress;
-// import java.net.NetworkInterface;
-// import java.util.Enumeration;
-// import java.nio.ByteBuffer;
 
 public class DataPacket implements Serializable{
 	
@@ -13,42 +8,13 @@ public class DataPacket implements Serializable{
 	private long sequenceNo;
 	// private int id;
 
-	public DataPacket( long sequenceNo, byte [] voice ){
+	public DataPacket( byte [] voice, long sequenceNo, int id ){
 		this.voiceBuffer = voice;		
 		this.sequenceNo = sequenceNo;
-		// this.id = 10;
+		// this.id = id;
 	}
-
-	public DataPacket( byte [] data ) throws IOException, ClassNotFoundException {
-		DataPacket tempPacket = ByteArrayToObject( data );
-		this.voiceBuffer = tempPacket.voiceBuffer;
-		this.sequenceNo  = tempPacket.sequenceNo;
-		// this.id  = tempPacket.id; 
-	}
-
-	// public InetAddress getLocalAddress() {
-	// 	try{
-	// 	    Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
-	// 	    while( ifaces.hasMoreElements() ){
-	// 	      	NetworkInterface iface = ifaces.nextElement();
-	// 	     	Enumeration<InetAddress> addresses = iface.getInetAddresses();
-
-	// 		    while( addresses.hasMoreElements() ){
-
-	// 		        InetAddress addr = addresses.nextElement();
-	// 		        if( addr instanceof Inet4Address && !addr.isLoopbackAddress() ){
-	// 		          return addr;
-	// 		        }
-	// 	      	}
-	// 	    }
-	// 	    return null;
-	// 	}catch(Exception e){
-	// 		e.printStackTrace();
-	// 		return null;
-	// 	}
-	// }
      
-	public DataPacket ByteArrayToObject(byte [] data) throws IOException{
+	public static DataPacket ByteArrayToObject(byte [] data) throws IOException{
 		ObjectInputStream  ois = null;
 		try{
 			ByteArrayInputStream b = new ByteArrayInputStream(data);
