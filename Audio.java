@@ -71,19 +71,12 @@ public class Audio{
         }
     }
 
-    // public TargetDataLine getTargetDataLine(){
-    //     return this.targetDataLine;  
-    // }
-
-    // public SourceDataLine sourceDataLine(){
-    //     return this.sourceDataLine;  
-    // }
 
     public void playAudio(byte buffer[]){
 	    sourceDataLine.write( buffer, 0, buffer.length ); //Playing audio available in buffer
     }
     
-    public byte[] captureAudio( ) {
+    public byte[] captureAudio() {
         byteArrayOutputStream = new ByteArrayOutputStream();
         byte tempBuffer[] = new byte[500];
         try {
