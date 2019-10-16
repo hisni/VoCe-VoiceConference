@@ -6,12 +6,12 @@ public class DataPacket implements Serializable{
 	private static final long serialVersionUID = -6470090944414208496L;
 	private byte [] voiceBuffer;
 	private long sequenceNo;
-	// private int id;
+	private int id;
 
 	public DataPacket( byte [] voice, long sequenceNo, int id ){
 		this.voiceBuffer = voice;		
 		this.sequenceNo = sequenceNo;
-		// this.id = id;
+		this.id = id;
 	}
      
 	public static DataPacket ByteArrayToObject(byte [] data) throws IOException{
@@ -54,8 +54,8 @@ public class DataPacket implements Serializable{
 		return voiceBuffer;
 	}
 
-	// public int getId(){
-	// 	return this.id;
-	// }
+	public int getId(){
+		return this.id;
+	}
 	
 }
