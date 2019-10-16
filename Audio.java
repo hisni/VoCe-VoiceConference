@@ -2,7 +2,6 @@
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
-// import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
@@ -14,13 +13,11 @@ import javax.sound.sampled.TargetDataLine;
 
 public class Audio{
 
-    // private boolean stopCapture = false;
     AudioFormat audioFormat;
     TargetDataLine targetDataLine;
     SourceDataLine sourceDataLine;
     ByteArrayOutputStream byteArrayOutputStream;
-    // AudioInputStream audioInputStream;
-
+    
     public Audio(){
         intialize();
     }
