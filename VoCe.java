@@ -1,41 +1,12 @@
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
+import java.net.*;
+import java.util.*;
 
-public class VoCe{
-	public static void main(String args[]){
-		if( args.length == 1 ){
+public class VoCe extends Thread{
 
-            InetAddress multicastIP;
-            int port;
-            int userID = getLocalAddress().hashCode();
+    private static InetAddress multicastIP;
+    private static int port;
 
-            try{
-                multicastIP = InetAddress.getByName( args[0] ) ;
-                port = Integer.parseInt( "9003") ;
-
-                Audio audioObj = new Audio();
-                
-                Receiver receiver = new Receiver( multicastIP, port );
-                Sender  sender = new Sender( multicastIP, port, userID, audioObj );
-                Player player = new Player( audioObj );
-                receiver.start();
-                sender.start();
-                player.start();
-
-            }catch(Exception e){
-                System.out.println(e);
-                e.printStackTrace();
-            }
-        }
-        else{
-            System.out.println( "usage: java Control <Multicast IP>" ) ;
-            return;
-		}
-    }
-    
-    public static InetAddress getLocalAddress() {
+    public static InetAddress getLocalAddress(){
 		try{
 		    Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
 		    while( ifaces.hasMoreElements() ){
@@ -55,5 +26,36 @@ public class VoCe{
 			e.printStackTrace();
 			return null;
 		}
-	}
+    }
+	public static void main(String args[]){
+		if( args.length == 1 ){
+
+            int userID = getLocalAddress().hashCode();
+
+            try{
+                multicastIP = InetAddress.getByName( args[0] ) ;
+                port = Integer.parseInt( "8003") ;
+
+                Audio audioObj = new Audio();
+                
+                Interaction intObj = new Interaction(0);
+                Receiver receiver = new Receiver( multicastIP, port );
+                Sender sender = new Sender( multicastIP, port, userID, audioObj );
+                Player player = new Player( audioObj );
+                intObj.start();
+                receiver.start();
+                sender.start();
+                player.start();
+
+            }catch(Exception e){
+                System.out.println(e);
+                e.printStackTrace();
+            }
+        }
+        else{
+            System.out.println( "usage: java Control <Multicast IP>" ) ;
+            return;
+		}
+    }
+    
 }
