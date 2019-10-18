@@ -32,7 +32,7 @@ public class Sender extends Thread {
 
                 buffer = DataPacket.ObjectToByteArray( dataPacket );
                 DatagramPacket packet = new DatagramPacket( buffer, buffer.length, destIP, Port ); 
-                
+                System.out.println( "Sender "+ dataPacket.getSequenceNo() );
                 socket.send( packet );  //Send the packet
             }
         }catch( IOException e ) {

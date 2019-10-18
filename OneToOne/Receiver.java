@@ -7,9 +7,11 @@ public class Receiver extends Thread{
 
     private int Port;
 	private DatagramSocket socket;
+	private Audio audioObj;
     
-    public Receiver( int port){
-		this.Port=port;
+    public Receiver( int port, Audio audioObj){
+		this.Port = port;
+		this.audioObj = audioObj; 
     }
 	public void run (){
 		try{
@@ -21,7 +23,8 @@ public class Receiver extends Thread{
 
 				socket.receive( packet );			//Receive a packet (blocking)
 				dataPacket = DataPacket.ByteArrayToObject( packet.getData() );
-				Player.addToBuffer( dataPacket );
+				System.out.println(dataPacket.getSequenceNo());
+				audioObj.playAudio( dataPacket.getVoice() );
 			}    
 		}catch( Exception e ){
 			System.out.println( e ) ;

@@ -16,13 +16,11 @@ public class VoCe{
 
                 Audio audioObj = new Audio();
                 
-                Receiver receiver = new Receiver( port );
+                Receiver receiver = new Receiver( port, audioObj );
                 Sender  sender = new Sender( destIP, port, audioObj );
-                Player player = new Player( audioObj );
                 receiver.start();
                 sender.start();
-                player.start();
-
+                
             }catch(Exception e){
                 System.out.println(e);
                 e.printStackTrace();
