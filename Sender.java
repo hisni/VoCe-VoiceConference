@@ -19,7 +19,6 @@ public class Sender extends Thread {
         this.Port = port;
         this.userID = id;
         this.audioObj = audioObj;
-
     }
 
     private void sendPacket(){
@@ -27,19 +26,20 @@ public class Sender extends Thread {
         byte[] buffer;
 
         try{           
-            while ( true ) {
+            while( true ) {
                 tempBuffer = audioObj.captureAudio();
-
-                sequenceNo = ( sequenceNo + 1 )%Integer.MAX_VALUE;
-                dataPacket = new DataPacket( tempBuffer, sequenceNo, userID );
-
-                buffer = DataPacket.ObjectToByteArray( dataPacket );
-                DatagramPacket packet = new DatagramPacket( buffer, buffer.length, MulticastIP, Port ); 
                 
-                // Send the packet
-                socket.setTimeToLive(2);
-                socket.send( packet );
-    
+                if( Interaction.getCurrState() == 1 ){
+                    sequenceNo = ( sequenceNo + 1 )%Integer.MAX_VALUE;
+                    dataPacket = new DataPacket( tempBuffer, sequenceNo, userID );
+
+                    buffer = DataPacket.ObjectToByteArray( dataPacket );
+                    DatagramPacket packet = new DatagramPacket( buffer, buffer.length, MulticastIP, Port ); 
+                    
+                    socket.setTimeToLive(2);
+                    socket.send( packet );
+                }
+                
             }
         }catch( IOException e ) {
             System.out.println(e);

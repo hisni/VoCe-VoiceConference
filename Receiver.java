@@ -22,7 +22,7 @@ public class Receiver extends Thread{
 			socket = new MulticastSocket( Port );
 			socket.setNetworkInterface( NetworkInterface.getByName(networkInterface.getName()) );//set the network interface
 			socket.joinGroup( MulticastIP );
-			// socket.setLoopbackMode(true);
+			socket.setLoopbackMode(true);
 			
 			DataPacket dataPacket;
 
@@ -30,10 +30,9 @@ public class Receiver extends Thread{
 				DatagramPacket packet = new DatagramPacket( new byte[packetsize], packetsize );
 
 				socket.receive( packet );		//Receive a packet (blocking)
-				dataPacket = DataPacket.ByteArrayToObject( packet.getData() );
-				
-				Player.addToBuffer( dataPacket );
 
+				dataPacket = DataPacket.ByteArrayToObject( packet.getData() );
+				Player.addToBuffer( dataPacket, 0 );
 			}    
 		}catch( Exception e ){
 			System.out.println( e ) ;
