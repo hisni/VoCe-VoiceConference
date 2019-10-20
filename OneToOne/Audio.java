@@ -18,7 +18,7 @@ public class Audio{
     ByteArrayOutputStream byteArrayOutputStream;
     
     public Audio(){
-        intialize();
+        initialize();    //Initialize audio components
     }
 
     private AudioFormat getAudioFormat() {
@@ -30,9 +30,9 @@ public class Audio{
         return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
     }
 
-    private void intialize(){       
+    private void initialize(){       
         try{
-            Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();    //get available mixers
+            Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();    //Get available mixers
             System.out.println("Available mixers:");
             Mixer mixer = null;
 
@@ -48,7 +48,7 @@ public class Audio{
                 }
             }
 
-            audioFormat = getAudioFormat();     //get the audio format
+            audioFormat = getAudioFormat();     //Get the audio format
             DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
 
             targetDataLine = (TargetDataLine) mixer.getLine(dataLineInfo);
@@ -71,10 +71,10 @@ public class Audio{
     }
 
     public void playAudio(byte buffer[]){
-	    sourceDataLine.write( buffer, 0, buffer.length ); //Playing audio available in buffer
+	    sourceDataLine.write( buffer, 0, buffer.length );   //Playing audio available in buffer
     }
     
-    public byte[] captureAudio() {
+    public byte[] captureAudio() {      //Capture audio and return the buffer byte array
         byteArrayOutputStream = new ByteArrayOutputStream();
         byte tempBuffer[] = new byte[500];
         try {

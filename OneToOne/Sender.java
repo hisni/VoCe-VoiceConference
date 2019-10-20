@@ -1,9 +1,8 @@
 import java.net.* ;
-import java.io.IOException;
 
 public class Sender extends Thread {
 
-    public final static int packetsize = 500;  
+    private final int packetsize = VoCe.PACKET_SIZE;
 
     private DatagramSocket socket = null;
     private InetAddress destIP;
@@ -17,24 +16,17 @@ public class Sender extends Thread {
         this.audioObj = audioObj;
     }
 
-    private void sendPacket(){
-        try{           
-            while ( true ){             //Continuously capture audio and send
-                buffer = audioObj.captureAudio();   //Capture
-
-                DatagramPacket packet = new DatagramPacket( buffer, buffer.length, destIP, Port );  //Create Datagram packet
-                socket.send( packet ); //Send the packet 
-            }
-        }catch( IOException e ) {
-            System.out.println(e);
-            e.printStackTrace();
-        }
-    }
-
     public void run(){
         try{
             socket = new DatagramSocket();  //Construct Datagram Socket
-            sendPacket();                   //Capture and send Packet
+            
+            while ( true ){             //Continuously capture audio and send
+                buffer = audioObj.captureAudio();   //Capture audio
+
+                DatagramPacket packet = new DatagramPacket( buffer, buffer.length, destIP, Port );  //Create a Datagram packet
+                socket.send( packet ); //Send the packet 
+            }
+
         }catch(Exception e){
             System.out.println(e);
             e.printStackTrace();

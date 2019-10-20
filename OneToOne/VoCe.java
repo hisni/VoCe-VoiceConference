@@ -1,6 +1,9 @@
 import java.net.InetAddress;
 
 public class VoCe{
+
+    public static int PACKET_SIZE = 512; 
+
 	public static void main(String args[]){
 		if( args.length == 1 ){
 

@@ -2,7 +2,7 @@ import java.net.* ;
 
 public class Receiver extends Thread{
 
-    public final static int packetsize = 500 ;
+    private final static int packetsize = VoCe.PACKET_SIZE;
 
     private int Port;
 	private DatagramSocket socket;
@@ -23,7 +23,7 @@ public class Receiver extends Thread{
 				socket.receive( packet );			//Receive a packet
 				audioObj.playAudio( packet.getData() );
 			}
-			
+
 		}catch( Exception e ){
 			System.out.println( e ) ;
 			e.printStackTrace();
