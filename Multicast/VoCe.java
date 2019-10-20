@@ -3,6 +3,7 @@ import java.util.*;
 
 public class VoCe extends Thread{
 
+    public static int PACKET_SIZE = 512;
     private static InetAddress multicastIP;
     private static int port;
 
