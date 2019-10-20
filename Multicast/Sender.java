@@ -4,7 +4,7 @@ import java.net.MulticastSocket;
 
 public class Sender extends Thread {
 
-    public final static int packetsize = 500;  
+    public final static int packetsize = VoCe.PACKET_SIZE;  
 
     private MulticastSocket socket = null;
     private InetAddress MulticastIP;
@@ -27,7 +27,7 @@ public class Sender extends Thread {
 
         try{           
             while( true ) {
-                tempBuffer = audioObj.captureAudio();
+                tempBuffer = audioObj.captureAudio( packetsize );
                 
                 if( Interaction.getCurrState() == 1 ){
                     sequenceNo = ( sequenceNo + 1 )%Integer.MAX_VALUE;

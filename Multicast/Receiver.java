@@ -3,7 +3,7 @@ import java.net.MulticastSocket;
 
 public class Receiver extends Thread{
 
-    public final static int packetsize = 603 ;
+    public final static int packetsize = VoCe.PACKET_SIZE + 103 ;
 
     private InetAddress MulticastIP;
     private int Port;

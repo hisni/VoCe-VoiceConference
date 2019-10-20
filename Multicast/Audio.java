@@ -19,7 +19,7 @@ public class Audio{
     ByteArrayOutputStream byteArrayOutputStream;
     
     public Audio(){
-        intialize();
+        Initialize();   //Initialize audio components
     }
 
     private AudioFormat getAudioFormat() {
@@ -31,9 +31,9 @@ public class Audio{
         return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
     }
 
-    private void intialize(){       
+    private void Initialize(){       
         try{
-            Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();    //get available mixers
+            Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();    //Get available mixers
             System.out.println("Available mixers:");
             Mixer mixer = null;
 
@@ -73,23 +73,23 @@ public class Audio{
 
 
     public void playAudio(byte buffer[]){
-	    sourceDataLine.write( buffer, 0, buffer.length ); //Playing audio available in buffer
+	    sourceDataLine.write( buffer, 0, buffer.length );   //Play the audio available in buffer
     }
     
-    public byte[] captureAudio() {
+    public byte[] captureAudio( int packetSize ){           //Capture audio and return buffer byte array
         byteArrayOutputStream = new ByteArrayOutputStream();
-        byte tempBuffer[] = new byte[500];
+        byte buffer[] = new byte[packetSize];
         try {
-            int readCount = targetDataLine.read(tempBuffer, 0, tempBuffer.length);  //Capture sound into tempBuffer
+            int readCount = targetDataLine.read(buffer, 0, buffer.length);  //Capture sound into buffer
                 if (readCount > 0) {
-                    byteArrayOutputStream.write(tempBuffer, 0, readCount);
+                    byteArrayOutputStream.write(buffer, 0, readCount);
                 }
             byteArrayOutputStream.close();
-            return tempBuffer;
+            return buffer;
         }catch(IOException e) {
             System.out.println(e);
             System.exit(0);
-            return tempBuffer;
+            return buffer;
         }
     }
 }
