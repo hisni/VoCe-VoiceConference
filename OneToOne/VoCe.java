@@ -16,6 +16,7 @@ public class VoCe{
 
                 Audio audioObj = new Audio();
                 
+                //Create sperate threads for send and receive & play audio
                 Receiver receiver = new Receiver( port, audioObj );
                 Sender  sender = new Sender( destIP, port, audioObj );
                 receiver.start();
