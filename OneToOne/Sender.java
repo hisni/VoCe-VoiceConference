@@ -21,7 +21,7 @@ public class Sender extends Thread {
             socket = new DatagramSocket();  //Construct Datagram Socket
             
             while ( true ){             //Continuously capture audio and send
-                buffer = audioObj.captureAudio();   //Capture audio
+                buffer = audioObj.captureAudio( packetsize );   //Capture audio
 
                 DatagramPacket packet = new DatagramPacket( buffer, buffer.length, destIP, Port );  //Create a Datagram packet
                 socket.send( packet ); //Send the packet 

@@ -74,19 +74,19 @@ public class Audio{
 	    sourceDataLine.write( buffer, 0, buffer.length );   //Playing audio available in buffer
     }
     
-    public byte[] captureAudio() {      //Capture audio and return the buffer byte array
+    public byte[] captureAudio( int packetSize ) {      //Capture audio and return the buffer byte array
         byteArrayOutputStream = new ByteArrayOutputStream();
-        byte tempBuffer[] = new byte[500];
+        byte buffer[] = new byte[packetSize];
         try {
-            int readCount = targetDataLine.read(tempBuffer, 0, tempBuffer.length);  //Capture sound into tempBuffer
+            int readCount = targetDataLine.read(buffer, 0, buffer.length);  //Capture sound into buffer
                 if (readCount > 0) {
-                    byteArrayOutputStream.write(tempBuffer, 0, readCount);
+                    byteArrayOutputStream.write(buffer, 0, readCount);
                 }
             byteArrayOutputStream.close();
-            return tempBuffer;
+            return buffer;
         }catch(IOException e) {
             System.out.println(e);
-            return tempBuffer;
+            return buffer;
         }
     }
 }
