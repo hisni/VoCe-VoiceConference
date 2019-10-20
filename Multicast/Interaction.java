@@ -17,7 +17,7 @@ public class Interaction extends Thread{
         try{
             while( true ){
                 if( currState == 0 ){
-                    System.out.println( "Please enter 'T' to talk & 'E' to stop: ");
+                    System.out.println( "Enter | 'T' to talk | 'E' to stop | 'exit' to Close |");
                 }
                 String readString = scanner.nextLine();
 
@@ -27,6 +27,8 @@ public class Interaction extends Thread{
                 }else if( readString.equalsIgnoreCase("E") & currState == 1 ) {
                     currState = 0;
                     System.out.println("Recoding Stoped");
+                }else if( readString.equalsIgnoreCase("exit") ){
+                    System.exit(0);
                 }
             }
         }catch (Exception e) {

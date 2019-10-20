@@ -7,7 +7,7 @@ public class VoCe extends Thread{
     private static InetAddress multicastIP;
     private static int port;
 
-    public static InetAddress getLocalAddress(){
+    public static InetAddress getLocalAddress(){        //Get Local IP Address
 		try{
 		    Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
 		    while( ifaces.hasMoreElements() ){
@@ -31,14 +31,15 @@ public class VoCe extends Thread{
 	public static void main(String args[]){
 		if( args.length == 1 ){
 
-            int userID = getLocalAddress().hashCode();
+            int userID = getLocalAddress().hashCode();  //Get hash value of local IP address as User ID
 
             try{
-                multicastIP = InetAddress.getByName( args[0] ) ;
-                port = Integer.parseInt( "8003") ;
+                multicastIP = InetAddress.getByName( args[0] );
+                port = Integer.parseInt( "35005") ;
 
                 Audio audioObj = new Audio();
                 
+                //Create sperate threads for send, receive, play audio and interact with user and start the treads
                 Interaction intObj = new Interaction(0);
                 Receiver receiver = new Receiver( multicastIP, port );
                 Sender sender = new Sender( multicastIP, port, userID, audioObj );
