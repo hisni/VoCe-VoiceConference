@@ -4,7 +4,7 @@ public class Receiver extends Thread{
 
     private final static int packetsize = VoCe.PACKET_SIZE;
 
-    private int Port;
+	private int Port;
 	private DatagramSocket socket;
 	private Audio audioObj;
     
