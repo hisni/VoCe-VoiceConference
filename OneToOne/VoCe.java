@@ -1,7 +1,4 @@
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
 
 public class VoCe{
 	public static void main(String args[]){
@@ -12,7 +9,7 @@ public class VoCe{
 
             try{
                 destIP = InetAddress.getByName( args[0] ) ;
-                port = Integer.parseInt( "9005") ;
+                port = Integer.parseInt( "35001") ;
 
                 Audio audioObj = new Audio();
                 
@@ -27,7 +24,7 @@ public class VoCe{
             }
         }
         else{
-            System.out.println( "usage: java Control <Destination IP>" ) ;
+            System.out.println( "USAGE: java VoCe <DestinationIP>" ) ;
             return;
 		}
     }

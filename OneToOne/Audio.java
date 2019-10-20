@@ -64,12 +64,11 @@ public class Audio{
             FloatControl control = (FloatControl)sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
             control.setValue(control.getMaximum());
 
-        }catch (LineUnavailableException e) {
+        }catch ( LineUnavailableException e) {
             System.out.println(e);
             System.exit(0);
         }
     }
-
 
     public void playAudio(byte buffer[]){
 	    sourceDataLine.write( buffer, 0, buffer.length ); //Playing audio available in buffer
@@ -87,7 +86,6 @@ public class Audio{
             return tempBuffer;
         }catch(IOException e) {
             System.out.println(e);
-            System.exit(0);
             return tempBuffer;
         }
     }
