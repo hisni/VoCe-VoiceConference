@@ -54,7 +54,7 @@ public class VoCe extends Thread{
             }
         }
         else{
-            System.out.println( "usage: java Control <Multicast IP>" ) ;
+            System.out.println( "USAGE: java VoCe <MulticastIP>" ) ;
             return;
 		}
     }
