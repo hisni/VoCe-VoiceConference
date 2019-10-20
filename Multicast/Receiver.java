@@ -8,31 +8,46 @@ public class Receiver extends Thread{
     private InetAddress MulticastIP;
     private int Port;
 	private MulticastSocket socket;
+
+	private int currUser;
+	private int prevUser;
     
     public Receiver( InetAddress IP, int port){
         this.MulticastIP=IP;
 		this.Port=port;
-    }
+	}
 
 	public void run (){
 		try{
 			//get the network interface
 			NetworkInterface networkInterface = NetworkInterface.getByInetAddress( VoCe.getLocalAddress() );
-			// Construct the socket
-			socket = new MulticastSocket( Port );
-			socket.setNetworkInterface( NetworkInterface.getByName(networkInterface.getName()) );//set the network interface
-			socket.joinGroup( MulticastIP );
-			socket.setLoopbackMode(true);
+			
+			socket = new MulticastSocket( Port );	//Construct the Multicast socket and bind it to a port (Receiving port)
+			socket.setNetworkInterface( NetworkInterface.getByName(networkInterface.getName()) );	//Set the network interface
+			socket.joinGroup( MulticastIP );		//Join Multicast group
+			// socket.setLoopbackMode(true);			//Disable Loopback
 			
 			DataPacket dataPacket;
+			DatagramPacket packet = new DatagramPacket( new byte[packetsize], packetsize );
+			socket.receive( packet );
+			dataPacket = DataPacket.ByteArrayToObject( packet.getData() );
+			Player.addToBuffer( dataPacket );
+			prevUser = dataPacket.getId();
+			currUser = dataPacket.getId();
 
-			while( true ){
-				DatagramPacket packet = new DatagramPacket( new byte[packetsize], packetsize );
+			while( true ){			//Continuously receive packets and add to buffer
+				packet = new DatagramPacket( new byte[packetsize], packetsize );
 
-				socket.receive( packet );		//Receive a packet (blocking)
+				socket.receive( packet );		//Receive a packet
+				dataPacket = DataPacket.ByteArrayToObject( packet.getData() ); //Convert byte array to object
 
-				dataPacket = DataPacket.ByteArrayToObject( packet.getData() );
-				Player.addToBuffer( dataPacket, 0 );
+				if( prevUser == currUser ){
+					Player.addToBuffer( dataPacket );		//Add the received packet to buffer
+				}else{
+					Player.changeUser( dataPacket.getSequenceNo() );
+					prevUser = currUser;
+					Player.addToBuffer( dataPacket );		//Add the received packet to buffer
+				}
 			}    
 		}catch( Exception e ){
 			System.out.println( e ) ;

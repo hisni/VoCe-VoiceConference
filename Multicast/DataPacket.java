@@ -13,7 +13,8 @@ public class DataPacket implements Serializable{
 		this.sequenceNo = sequenceNo;
 		this.id = id;
 	}
-     
+	 
+	//Method to convert object to byte array
 	public static DataPacket ByteArrayToObject(byte [] data) throws IOException{
 		ObjectInputStream  ois = null;
 		try{
@@ -29,6 +30,7 @@ public class DataPacket implements Serializable{
 		}
 	}
 
+	//Method to convert byte array to object
 	public static byte[] ObjectToByteArray( DataPacket packet ) throws IOException  {
 		ObjectOutputStream  oos = null;
 		try{  
@@ -46,14 +48,22 @@ public class DataPacket implements Serializable{
 		}
 	}
 
+	//Method get sequence number
 	public long getSequenceNo(){
 		return this.sequenceNo;
 	}
 
+	//Method set sequence number
+	public void setSequenceNo( long seq ){
+		this.sequenceNo = seq;
+	}
+
+	//Method get voice buffer
 	public byte[] getVoice(){
 		return voiceBuffer;
 	}
 
+	//Method get user id
 	public int getId(){
 		return this.id;
 	}

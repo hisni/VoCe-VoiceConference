@@ -25,19 +25,22 @@ public class Sender extends Thread {
         DataPacket dataPacket;
         byte[] buffer;
 
-        try{           
+        try{
+            //Continuously run and check user state
+            //If user wants to speak ( state=1 ) capture audio and send the packet
+            //Else keep waiting (listening only state)
             while( true ) {
                 tempBuffer = audioObj.captureAudio( packetsize );
                 
                 if( Interaction.getCurrState() == 1 ){
-                    sequenceNo = ( sequenceNo + 1 )%Integer.MAX_VALUE;
-                    dataPacket = new DataPacket( tempBuffer, sequenceNo, userID );
+                    sequenceNo = ( sequenceNo + 1 )%Integer.MAX_VALUE;  //Add sequence number
+                    dataPacket = new DataPacket( tempBuffer, sequenceNo, userID );  //Create a data packet object
 
-                    buffer = DataPacket.ObjectToByteArray( dataPacket );
-                    DatagramPacket packet = new DatagramPacket( buffer, buffer.length, MulticastIP, Port ); 
+                    buffer = DataPacket.ObjectToByteArray( dataPacket );    //Convert Data packet object to byte array
+                    DatagramPacket packet = new DatagramPacket( buffer, buffer.length, MulticastIP, Port ); //Convert object to byte array
                     
-                    socket.setTimeToLive(2);
-                    socket.send( packet );
+                    socket.setTimeToLive(2);    //Set TTL
+                    socket.send( packet );      //Send the Packet
                 }
                 
             }
@@ -50,9 +53,9 @@ public class Sender extends Thread {
 
     public void run(){
         try{
-            socket = new MulticastSocket();
-            socket.setLoopbackMode(true);
-            sendPacket();
+            socket = new MulticastSocket(); //Create a multicast socet
+            socket.setLoopbackMode(true);   //Disable loopback
+            sendPacket();   //Send packets according to the user state
         }catch(Exception e){
             System.out.println(e);
             e.printStackTrace();
