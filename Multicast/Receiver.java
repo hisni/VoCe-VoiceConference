@@ -37,11 +37,11 @@ public class Receiver extends Thread{
 			
 			while( true ){			//Continuously receive packets and add to buffer
 				packet = new DatagramPacket( new byte[packetsize], packetsize );
-
+				
 				socket.receive( packet );		//Receive a packet
 				dataPacket = DataPacket.ByteArrayToObject( packet.getData() ); //Convert byte array to object
 				currUser = dataPacket.getId();
-
+				
 				if( prevUser == currUser ){
 					Player.addToBuffer( dataPacket );		//Add the received packet to buffer
 				}else{

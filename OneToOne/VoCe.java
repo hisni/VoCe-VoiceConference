@@ -12,7 +12,7 @@ public class VoCe{
 
             try{
                 destIP = InetAddress.getByName( args[0] ) ;
-                port = Integer.parseInt( "35001") ;
+                port = Integer.parseInt( "35000") ;
 
                 Audio audioObj = new Audio();
                 

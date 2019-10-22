@@ -11,7 +11,7 @@ public class Player extends Thread {
     private static long prevPacket = 0;
     private static long intervalPackets = 0;
     private static long currReceivedSeq = 0;
-    private static long prevReceivedSeq = 0;
+    private static long prevReceivedSeq = -1;
     private long packetLoss = 0;
     private Audio audioObj;
 
@@ -27,16 +27,17 @@ public class Player extends Thread {
         currReceivedSeq = dp.getSequenceNo();
         if( currReceivedSeq < prevReceivedSeq ){
             unorderedPacket++;
-        }else{
-            prevReceivedSeq = currReceivedSeq;
         }
+        // else{
+            prevReceivedSeq = currReceivedSeq;
+        // }
         intervalPackets++;
     }
 
     private DataPacket getAudio(){  //Get a packet from buffer
         
-        while(true){                //Check whether buffer is filled enough
-			int counter=0;
+        while( true ){              //Check whether buffer is filled enough
+			int counter = 0;
 			for( int i=0; i<BUFFSIZE; i++){
 				if( Buffer[ getIndex(i) ] != null ) counter++;
 			}     
@@ -64,7 +65,7 @@ public class Player extends Thread {
 
     public static void changeUser(){
         currentPlaying = -1;
-        prevReceivedSeq = 0;
+        prevReceivedSeq = -1;
     }
 
     // Method to calculate index in buffer
@@ -85,6 +86,7 @@ public class Player extends Thread {
 
     public long getPacketLoss(){    //Get lossed packets count
         packetLoss = ( currReceivedSeq - prevPacket ) - intervalPackets;
+        if ( packetLoss < 0 ) return 0;
         return packetLoss;
     }
 

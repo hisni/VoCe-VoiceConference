@@ -35,7 +35,7 @@ public class VoCe extends Thread{
 
             try{
                 multicastIP = InetAddress.getByName( args[0] );
-                port = Integer.parseInt( "8000") ;
+                port = Integer.parseInt( "25000") ;
 
                 Audio audioObj = new Audio();                
                 //Create sperate threads for send, receive, play audio and interact with user and start the treads
