@@ -35,7 +35,7 @@ public class Player extends Thread {
 
     private DataPacket getAudio(){  //Get a packet from buffer
         
-        while(true){        //Check whether buffer is filled enough
+        while(true){                //Check whether buffer is filled enough
 			int counter=0;
 			for( int i=0; i<BUFFSIZE; i++){
 				if( Buffer[ getIndex(i) ] != null ) counter++;
@@ -45,8 +45,8 @@ public class Player extends Thread {
         
         DataPacket dataPacket;
 
-        for(int j=0;j<BUFFSIZE;j++){
-            if( Buffer[ getIndex(j) ] != null){
+        for( int j=0; j<BUFFSIZE; j++ ){
+            if( Buffer[ getIndex(j) ] != null ){
                 long sequenceNo = Buffer[ getIndex(j) ].getSequenceNo();
                 
                 if( sequenceNo >= currentPlaying ){
@@ -62,7 +62,7 @@ public class Player extends Thread {
         return null;
     }
 
-    public static void changeUser( long seq ){
+    public static void changeUser(){
         currentPlaying = -1;
         prevReceivedSeq = 0;
     }
@@ -84,14 +84,15 @@ public class Player extends Thread {
     }
 
     public long getPacketLoss(){    //Get lossed packets count
-        packetLoss = intervalPackets - ( currReceivedSeq - prevPacket ) ;
+        packetLoss = ( currReceivedSeq - prevPacket ) - intervalPackets;
         return packetLoss;
     }
 
     public void run (){
+
         while(true){        //Continuously play the packets in the buffer
-            DataPacket dataPacket = getAudio();     //Get a packet from buffer
-            if( dataPacket != null ){   //Play the packet if it is not null
+            DataPacket dataPacket = getAudio(); //Get a packet from buffer
+            if( dataPacket != null ){           //Play the packet if it is not null
                 currentPlaying = dataPacket.getSequenceNo();
                 audioObj.playAudio( dataPacket.getVoice() );
             }
@@ -102,6 +103,7 @@ public class Player extends Thread {
                 resetStats();
             }
         }
+
     }
 
 }

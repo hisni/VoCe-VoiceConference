@@ -24,8 +24,9 @@ public class Receiver extends Thread{
 			
 			socket = new MulticastSocket( Port );	//Construct the Multicast socket and bind it to a port (Receiving port)
 			socket.setNetworkInterface( NetworkInterface.getByName(networkInterface.getName()) );	//Set the network interface
+			socket.setBroadcast(true);				//Enable multicast for windows
 			socket.joinGroup( MulticastIP );		//Join Multicast group
-			// socket.setLoopbackMode(true);			//Disable Loopback
+			socket.setLoopbackMode(true);			//Disable Loopback
 			
 			DataPacket dataPacket;
 			DatagramPacket packet = new DatagramPacket( new byte[packetsize], packetsize );
@@ -44,11 +45,12 @@ public class Receiver extends Thread{
 				if( prevUser == currUser ){
 					Player.addToBuffer( dataPacket );		//Add the received packet to buffer
 				}else{
-					Player.changeUser( dataPacket.getSequenceNo() );
+					Player.changeUser();
 					prevUser = currUser;
 					Player.addToBuffer( dataPacket );		//Add the received packet to buffer
 				}
-			}    
+			}
+			
 		}catch( Exception e ){
 			System.out.println( e ) ;
 			e.printStackTrace();

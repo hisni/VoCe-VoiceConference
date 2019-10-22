@@ -55,7 +55,7 @@ public class Sender extends Thread {
         try{
             socket = new MulticastSocket(); //Create a multicast socet
             socket.setLoopbackMode(true);   //Disable loopback
-            sendPacket();   //Send packets according to the user state
+            sendPacket();       //Send packets according to the user state
         }catch(Exception e){
             System.out.println(e);
             e.printStackTrace();
