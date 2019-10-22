@@ -28,14 +28,14 @@ public class VoCe extends Thread{
 			return null;
 		}
     }
-	public static void main(String args[]){
-		if( args.length == 1 ){
 
+    public static void main(String args[]){
+		if( args.length == 1 ){
             int userID = getLocalAddress().hashCode();  //Get hash value of local IP address as User ID
 
             try{
                 multicastIP = InetAddress.getByName( args[0] );
-                port = Integer.parseInt( "35005") ;
+                port = Integer.parseInt( "8000") ;
 
                 Audio audioObj = new Audio();
                 
