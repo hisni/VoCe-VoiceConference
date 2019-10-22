@@ -1,19 +1,17 @@
-
 public class Player extends Thread {
 
     static volatile long startTime = (long)System.currentTimeMillis();
 
-    private static final int BUFFSIZE = 256;
+    private static final int BUFFSIZE = 512;
     private static int THRESHOLD = 32;
     
     private static DataPacket Buffer[] = new DataPacket[BUFFSIZE];
     private static long currentPlaying = -1;
     private static long unorderedPacket = 0;
-    private static long receivedPackets = 0;
+    private static long prevPacket = 0;
     private static long intervalPackets = 0;
     private static long currReceivedSeq = 0;
     private static long prevReceivedSeq = 0;
-    private static long totalPacketLoss = 0;
     private long packetLoss = 0;
     private Audio audioObj;
 
@@ -29,9 +27,9 @@ public class Player extends Thread {
         currReceivedSeq = dp.getSequenceNo();
         if( currReceivedSeq < prevReceivedSeq ){
             unorderedPacket++;
+        }else{
+            prevReceivedSeq = currReceivedSeq;
         }
-        prevReceivedSeq = currReceivedSeq;
-        receivedPackets++;
         intervalPackets++;
     }
 
@@ -67,8 +65,6 @@ public class Player extends Thread {
     public static void changeUser( long seq ){
         currentPlaying = -1;
         prevReceivedSeq = 0;
-        receivedPackets = seq;
-        totalPacketLoss = 0;
     }
 
     // Method to calculate index in buffer
@@ -84,10 +80,11 @@ public class Player extends Thread {
         unorderedPacket = 0;
         packetLoss = 0;
         intervalPackets = 0;
+        prevPacket = currReceivedSeq;
     }
 
     public long getPacketLoss(){    //Get lossed packets count
-        packetLoss = (currReceivedSeq - receivedPackets) - totalPacketLoss;
+        packetLoss = intervalPackets - ( currReceivedSeq - prevPacket ) ;
         return packetLoss;
     }
 
