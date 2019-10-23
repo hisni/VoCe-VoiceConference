@@ -85,8 +85,8 @@ public class Player extends Thread {
     }
 
     public long getPacketLoss(){    //Get lossed packets count
-        packetLoss = ( currReceivedSeq - prevPacket ) - intervalPackets;
-        if ( packetLoss < 0 ) return 0;
+        packetLoss = intervalPackets - ( currReceivedSeq - prevPacket );
+        if ( packetLoss < 0 ) return -packetLoss;
         return packetLoss;
     }
 

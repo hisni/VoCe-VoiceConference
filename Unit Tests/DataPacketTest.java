@@ -7,7 +7,7 @@ public class DataPacketTest extends TestCase{
     @Test
     public void testObjectToByteArray() {
 
-        System.out.println("ObjectToByteArray method test: ");
+        System.out.println("ObjectToByteArray method test");
         DataPacket instance = null;
         DataPacket rebuild = null;
 
@@ -29,7 +29,7 @@ public class DataPacketTest extends TestCase{
     @Test
     public void testReadObject(){
 
-        System.out.println("ByteArrayToObject method test: ");
+        System.out.println("ByteArrayToObject method test");
         byte[] byteArray = "Sample Testing Voice".getBytes();
         byte[] result = null;
 
@@ -49,7 +49,7 @@ public class DataPacketTest extends TestCase{
     @Test
     public void testGetSequenceNo() {
 
-        System.out.println("getSequenceNo method test:");
+        System.out.println("getSequenceNo method test");
         DataPacket instance = new DataPacket( "Sample Testing Voice".getBytes(), 30000, 3 );
 
         long expResult = 30000;
@@ -61,7 +61,7 @@ public class DataPacketTest extends TestCase{
     @Test
     public void testSetSequenceNo() {
 
-        System.out.println("setSequenceNo method test:");
+        System.out.println("setSequenceNo method test");
         DataPacket instance = new DataPacket( "Sample Testing Voice".getBytes(), 40000, 4 );
 
         long expResult = 50000;
@@ -74,7 +74,7 @@ public class DataPacketTest extends TestCase{
     @Test
     public void testGetVoice(){
 
-        System.out.println("getVoice method test:");
+        System.out.println("getVoice method test");
         byte[] expResult =  "Sample Testing Voice".getBytes();
         DataPacket instance = new DataPacket( expResult, 50000, 5);
 
@@ -85,7 +85,7 @@ public class DataPacketTest extends TestCase{
     @Test
     public void testGetId() {
 
-        System.out.println("getId method test:");
+        System.out.println("getId method test");
         int expResult = 6;
         DataPacket instance = new DataPacket( "Sample Testing Voice".getBytes(), 60000, expResult );
 

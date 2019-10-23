@@ -1,0 +1,10 @@
+sudo apt-get install iproute
+
+//Add Delay
+sudo tc qdisc add dev wlo1 root netem delay 250ms
+
+//Disable Delay
+sudo tc qdisc del dev wlo1 root netem
+
+//Delay, Loss, Duplicate, Corrupt, Reorder
+sudo tc qdisc add dev eth0 root netem delay 200ms 40ms 25% loss 15.3% 25% duplicate 1% corrupt 0.1% reorder 5% 50%

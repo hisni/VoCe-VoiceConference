@@ -13,7 +13,7 @@ public class Receiver extends Thread{
 		this.audioObj = audioObj; 
 	}
 	
-	public void run (){
+	public void run(){
 		try{
 			socket = new DatagramSocket( Port );	//Construct the socket and bind to a port
 
